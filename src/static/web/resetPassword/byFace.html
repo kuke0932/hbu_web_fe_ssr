@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<link rel="stylesheet" href="style.css">
+<script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="js/imgUp.js"></script>
+<body>
+  <div class="tabItem steps2" style="display: block;">
+    <div class="step2">
+      <div class="steps" style="width: 888px;">
+        <ul>
+          <li class="bgStep1_1">基本资料</li>
+          <li class="bgStep2_2 bgStep2_2Selected">上传照片</li>
+          <li class="bgStep3_3">设置新密码</li>
+          <li class="bgStep4_4">完成</li>
+        </ul>
+      </div>
+
+      <div class="stepCon">
+        <div class="img-box full">
+          <section class=" img-section">
+            <p class="up-p"><span class="up-span">最多可以上传3张图片</span></p>
+            <div class="z_photo upimg-div clear" style="padding-left: 45px;">
+              <section class="z_file fl">
+                <img src="img/a11.png" class="add-img">
+                <input type="file" name="file" id="file" class="file" value="" accept="image/jpg,image/jpeg,image/png,image/bmp" multiple />
+              </section>
+            </div>
+          </section>
+        </div>
+        <aside class="mask works-mask">
+          <div class="mask-content">
+            <p class="del-p">您确定要删除图片吗？</p>
+            <p class="check-p"><span class="del-com wsdel-ok">确定</span><span class="wsdel-no">取消</span></p>
+          </div>
+        </aside>
+        <button class="next to3">下一步</button>
+      </div>
+    </div>
+
+    <div class="step3" style="display: none;">
+      <div class="steps">
+        <div class="steps" style="width: 888px;">
+          <ul>
+            <li class="bgStep1_1">基本资料</li>
+            <li class="bgStep2_2">上传照片</li>
+            <li class="bgStep3_3 bgStep3_3Selected">设置新密码</li>
+            <li class="bgStep4_4">完成</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="stepCon byMobile" style="margin-top: 100px;">
+        <div style="display: none;">手&nbsp;机&nbsp;号&nbsp;码：<input type="text"></div>
+        <div style="display: none;">验&nbsp;&nbsp;&nbsp;证&nbsp;&nbsp;&nbsp;码：<input type="text" style="width: 160px;"><button class="getCode">获取验证码</button></div>
+        <div>新&nbsp;&nbsp;&nbsp;密&nbsp;&nbsp;&nbsp;码：<input type="text"></div>
+        <div>确认新密码：<input type="text"></div>
+
+        <button class="next toEnd">提交</button>
+      </div>
+    </div>
+
+    <div class="step4" style="display: none;">
+      <div class="steps">
+        <div class="steps" style="width: 888px;">
+          <ul>
+            <li class="bgStep1_1">基本资料</li>
+            <li class="bgStep2_2">上传照片</li>
+            <li class="bgStep3_3">设置新密码</li>
+            <li class="bgStep4_4 bgStep4_4Selected">完成</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="stepCon byMobile" style="margin-top: 100px;">
+        <img src="img/success.png" width="150" height="103" alt="">
+        <div class="successTip">
+          密码已成功找回,请注意保管新密码！
+        </div>
+      </div>
+    </div>
+  </div>
+<script>
+  $(function(){
+    $(".to3").click(function(){
+      $(".step2").hide();
+      $(".step3").show();
+    });
+
+    $(".toEnd").click(function(){
+      $(".step3").hide();
+      $(".step4").show();
+    });
+  })
+</script>
+</body>
+</html>

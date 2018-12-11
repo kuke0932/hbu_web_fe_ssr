@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<link rel="stylesheet" href="style.css">
+<script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<body>
+  <div class="tabItem steps2" style="display: block;">
+    <div class="step2">
+      <div class="steps">
+        <ul>
+          <li class="bgStep1">基本信息</li>
+          <li class="bgStep2 bgStep2Selected">手机验证</li>
+          <li class="bgStep3">完成</li>
+        </ul>
+      </div>
+
+      <div class="stepCon byMobile">
+        <div>手&nbsp;机&nbsp;号&nbsp;码：<span>*******0788</span></div>
+        <div>验&nbsp;&nbsp;&nbsp;证&nbsp;&nbsp;&nbsp;码：<input type="text" style="width: 160px;"><button class="getCode">获取验证码</button></div>
+        <div>新&nbsp;&nbsp;&nbsp;密&nbsp;&nbsp;&nbsp;码：<input type="text"></div>
+        <div>确认新密码：<input type="text"></div>
+
+        <button class="next">提交</button>
+      </div>
+    </div>
+
+    <div class="step3" style="display: none;">
+      <div class="steps">
+        <ul>
+          <li class="bgStep1">第一步</li>
+          <li class="bgStep2">第二步</li>
+          <li class="bgStep3 bgStep3Selected">第三步</li>
+        </ul>
+      </div>
+
+      <div class="stepCon byMobile" style="margin-top: 100px;">
+        <img src="img/success.png" width="150" height="103" alt="">
+        <div class="successTip">
+          密码已成功找回,请注意保管新密码！
+        </div>
+      </div>
+    </div>
+  </div>
+<script>
+  $(function(){
+    $(".next").click(function(){
+      $(".step2").hide();
+      $(".step3").show();
+    });
+  })
+</script>
+</body>
+</html>

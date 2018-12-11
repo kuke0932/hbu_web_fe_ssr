@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<link rel="stylesheet" href="style.css">
+<script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="js/upload.js"></script>
+<body>
+  <div class="tabItem steps2" style="display: block;">
+    <div class="step2">
+      <div class="steps">
+        <ul>
+          <li class="bgStep1">基本信息</li>
+          <li class="bgStep2 bgStep2Selected">提交资料</li>
+          <li class="bgStep3">完成</li>
+        </ul>
+      </div>
+
+      <div class="stepCon byMobile">
+        <div class="formDiv">
+          <div class="trDiv"><span class="label">手&nbsp;机&nbsp;号&nbsp;码：</span><input class="inputs" type="text"></div>
+          <div class="trDiv"><span class="label">验&nbsp;&nbsp;&nbsp;证&nbsp;&nbsp;&nbsp;码：</span><input class="inputs" type="text" style="width: 260px;"><button class="getCodes" style="float: left;">获取验证码</button></div>
+          <div class="trDiv"><span class="label">身&nbsp;份&nbsp;证&nbsp;号：</span><input class="inputs" type="text"></div>
+          <div class="trDiv handIDImg">
+            <span class="label">手持身份证：</span>
+            <div id="drop_area" style="float: left;"></div>
+            <div class="demo">
+              <div class="imgDescrib">示例：</div>
+              <img src="img/sample.jpg" width="105" height="120" alt="">
+            </div>
+          </div>
+
+          <button class="next">提交</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="step3" style="display: none;">
+      <div class="steps">
+        <ul>
+          <li class="bgStep1">基本信息</li>
+          <li class="bgStep2">提交资料</li>
+          <li class="bgStep3 bgStep3Selected">完成</li>
+        </ul>
+      </div>
+
+      <div class="stepCon byMobile" style="margin-top: 100px;">
+        <img src="img/success.png" width="150" height="103" alt="">
+        <div class="successTip">
+          申请已提交，请等待审核！<br />
+          审核通过后会以短信的形式发送到您手机上，请注意查收！
+        </div>
+      </div>
+    </div>
+  </div>
+<script>
+  $(function(){
+    $(".next").click(function(){
+      $(".step2").hide();
+      $(".step3").show();
+    });
+  })
+</script>
+  <script type="text/javascript">
+    var dragImgUpload = new DragImgUpload("#drop_area",{
+      callback:function (files) {
+        //回调函数，可以传递给后台等等
+        var file = files[0];
+        console.log(file.name);
+      }
+    })
+  </script>
+</body>
+</html>

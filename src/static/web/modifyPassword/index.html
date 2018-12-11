@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>修改密码</title>
+</head>
+<link rel="stylesheet" href="../resetPassword/style.css">
+<script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+<body>
+<div id="app">
+  <div class="tabItem resetPwd">
+    <div class="resetForm">
+      <div>账&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号：<input type="text" id="account"  v-model="account" @blur="accountBlur" /></div>
+      <div>姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：<input type="text" v-model="userName" ></div>
+      <div v-if="!noPhone">手&nbsp;&nbsp;&nbsp;机&nbsp;&nbsp;&nbsp;号：<input type="text"  v-model="phone" /></div>
+      <div v-if="!noPhone">验&nbsp;&nbsp;&nbsp;证&nbsp;&nbsp;&nbsp;码：<input type="text"  v-model="verifyCode" style="width: 160px;"/>
+        <button class="getCode" @click="getCode" :disabled="isDisabled">{{getCodeText}}</button>
+      </div>
+      <div>旧&nbsp;&nbsp;&nbsp;密&nbsp;&nbsp;&nbsp;码：<input type="text" v-model="oldPwd" ></div>
+      <div>新&nbsp;&nbsp;&nbsp;密&nbsp;&nbsp;&nbsp;码：<input type="text" v-model="newPwd" ></div>
+      <div>确认新密码：<input type="text" v-model="confirmPwd" ></div>
+      <button class="resetPwdSubmit">提交</button>
+    </div>
+
+    <div class="resetSuccess" style="display: none;">
+      密码重置成功
+    </div>
+  </div>
+</div>
+<script>
+  $(function(){
+    window.onload = function() {
+      document.querySelector('#account').focus()
+    }
+    $(".resetPwdSubmit").click(function(){
+      $(".resetForm").hide();
+      $(".resetSuccess").show();
+    })
+  })
+  new Vue({
+    el: '#app',
+    data () {
+      return {
+        account: '',
+        userName: '',
+        oldPwd: '',
+        newPwd: '',
+        confirmPwd: '',
+        phone: '',
+        verifyCode: '',
+        getCodeText: '获取验证码',
+        isDisabled: false,
+        noPhone: false,
+        weWorkVerify: true
+      }
+    },
+    watch: {
+      account: function (e) {
+        if (!e) {
+          document.querySelector('#account').focus()
+        }
+      }
+    },
+    methods: {
+      accountBlur () {
+        const that = this
+        setTimeout(() => {
+          if (that.account) {
+            $.ajax({
+              type: "POST",
+              url: "http://10.10.0.1/business/api/auth/verifyHasMobile",
+              data: {account: that.account},
+              dataType: "json",
+              complete: (XMLHttpRequest, textStatus) => {
+                console.log(XMLHttpRequest, textStatus)    //调用本次ajax请求时传递的options参数
+              },
+              success: function(data){
+                console.log(data)
+              }
+            })
+            // verifyHasMobile(that.account).then((resp) => {
+            //   if (resp.status === 200) {
+            //     that.noPhone = false
+            //     confirm('您已完善手机号，手机号码为' + resp.data.replace(/(.{3}).*(.{4})/, '$1****$2') + '，是否使用此手机号？')
+            //     // MessageBox.confirm(
+            //     //   '您已完善手机号，手机号码为' + resp.data.replace(/(.{3}).*(.{4})/, '$1****$2') + '，是否使用此手机号？',
+            //     //   '温馨提示',
+            //     //   {
+            //     //     cancelButtonText: '更换手机号'
+            //     //   }
+            //     // ).then(action => {
+            //     //   console.log(action)
+            //     // }).catch(err => {
+            //     //   if (err === 'cancel') {
+            //     //     that.noPhone = true
+            //     //   }
+            //     // })
+            //   }
+            //   if (resp.status === 211) {
+            //     alert(resp.message)
+            //     // Toast({
+            //     //   message: resp.message,
+            //     //   position: 'bottom',
+            //     //   duration: 2000
+            //     // })
+            //   } else if (resp.status === 210) {
+            //     alert(resp.message)
+            //     // const instance = Toast({
+            //     //   message: resp.message,
+            //     //   position: 'bottom'
+            //     // })
+            //     // setTimeout(() => {
+            //     //   instance.close()
+            //     //   that.noPhone = true
+            //     // }, 2000)
+            //   }
+            // })
+          }
+        }, 200)
+      },
+      getCode () {
+        const that = this
+        const phone = /^(13[0-9]|14[5-9]|15[012356789]|166|17[0-8]|18[0-9]|19[8-9])[0-9]{8}$/
+        if (that.phone === '') {
+          alert('请输入手机号')
+          return
+        }
+        if (!phone.test(that.phone)) {
+          // Toast({
+          //   message: '手机号格式错误',
+          //   position: 'bottom',
+          //   duration: 1000
+          // })
+          alert('手机号格式错误')
+          return
+        }
+        $.ajax({
+          type: "POST",
+          url: "http://10.10.0.1/business/api/auth/sendSmsCode",
+          data: {mobile: that.phone},
+          dataType: "json",
+          complete: (XMLHttpRequest, textStatus) => {
+            console.log(XMLHttpRequest, textStatus)
+          },
+          success: function(data){
+            console.log(data)
+            alert('发送成功！')
+            that.isDisabled = true
+            let time = 60
+            let codeTime = setInterval(() => {
+              time--
+              that.getCodeText = time + 's后重新获取'
+              if (time === 0) {
+                that.getCodeText = '重新获取'
+                that.isDisabled = false
+                clearInterval(codeTime)
+              }
+            }, 1000)
+          }
+        })
+        // sendSmsCode(that.phone).then(() => {
+        //   Toast({
+        //     message: '发送成功！',
+        //     position: 'bottom',
+        //     duration: 1000
+        //   })
+        //   that.isDisabled = true
+        //   let time = 60
+        //   let codeTime = setInterval(() => {
+        //     time--
+        //     that.getCodeText = time + 's后重新获取'
+        //     if (time === 0) {
+        //       that.getCodeText = '重新获取'
+        //       that.isDisabled = false
+        //       clearInterval(codeTime)
+        //     }
+        //   }, 1000)
+        // })
+      }
+    }
+  })
+</script>
+</body>
+</html>
